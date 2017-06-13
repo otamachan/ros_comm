@@ -71,6 +71,10 @@ def rosmaster_main(argv=sys.argv, stdout=sys.stdout, env=os.environ):
     parser.add_option("-t", "--timeout",
                       dest="timeout",
                       help="override the socket connection timeout (in seconds).", metavar="TIMEOUT")
+    parser.add_option("--close-sockets",
+                      dest="close_sockets",
+                      action="store_true",
+                      help="enable checking and closing CLOSE_WAIT sockets.")
     options, args = parser.parse_args(argv[1:])
 
     # only arg that zenmaster supports is __log remapping of logfilename
@@ -78,7 +82,7 @@ def rosmaster_main(argv=sys.argv, stdout=sys.stdout, env=os.environ):
         if not arg.startswith('__log:='):
             parser.error("unrecognized arg: %s"%arg)
     configure_logging()   
-    
+
     port = rosmaster.master.DEFAULT_MASTER_PORT
     if options.port:
         port = int(options.port)
